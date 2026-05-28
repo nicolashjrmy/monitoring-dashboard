@@ -29,7 +29,7 @@ export function Sidebar() {
             BRI
           </div>
           <div>
-            <h1 className="font-bold text-lg">siRestruk</h1>
+            <h1 className="font-bold text-lg">Credit Monitoring</h1>
             <p className="text-xs text-sidebar-foreground/60">Banking Platform</p>
           </div>
         </div>

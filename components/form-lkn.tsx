@@ -1,9 +1,54 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, type ChangeEvent } from 'react';
 
 export function FormLKN() {
   const [activeTab, setActiveTab] = useState('penagihan');
+
+  const [filePreviews, setFilePreviews] = useState<{
+    penagihanSelfie: { url: string | null; name: string | null };
+    ekspansiSelfie: { url: string | null; name: string | null };
+    penyelesaianSelfie: { url: string | null; name: string | null };
+    penyelesaianDokumen: { url: string | null; name: string | null };
+  }>({
+    penagihanSelfie: { url: null, name: null },
+    ekspansiSelfie: { url: null, name: null },
+    penyelesaianSelfie: { url: null, name: null },
+    penyelesaianDokumen: { url: null, name: null },
+  });
+
+  const handleFileChange = (
+    key: keyof typeof filePreviews,
+    event: ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    setFilePreviews((prev) => {
+      const prevUrl = prev[key].url;
+      if (prevUrl) {
+        URL.revokeObjectURL(prevUrl);
+      }
+
+      if (!file) {
+        return { ...prev, [key]: { url: null, name: null } };
+      }
+
+      const url = file.type.startsWith('image/') ? URL.createObjectURL(file) : null;
+      return {
+        ...prev,
+        [key]: { url, name: file.name },
+      };
+    });
+  };
+
+  useEffect(() => {
+    return () => {
+      Object.values(filePreviews).forEach((preview) => {
+        if (preview.url) {
+          URL.revokeObjectURL(preview.url);
+        }
+      });
+    };
+  }, [filePreviews]);
 
   const tabs = [
     { id: 'penagihan', label: 'Penagihan' },
@@ -110,7 +155,25 @@ export function FormLKN() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Foto Selfie KTP</label>
-                  <input type="file" className="w-full px-4 py-2 border border-gray-300 rounded-lg" />
+                  <label className="inline-flex items-center justify-center w-full px-4 py-2 bg-[#003c7a] text-white rounded-lg cursor-pointer hover:bg-[#002d5a] transition-colors">
+                    Choose file
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="sr-only"
+                      onChange={(e) => handleFileChange('penagihanSelfie', e)}
+                    />
+                  </label>
+                  {filePreviews.penagihanSelfie.name && (
+                    <p className="mt-2 text-sm text-gray-600">{filePreviews.penagihanSelfie.name}</p>
+                  )}
+                  {filePreviews.penagihanSelfie.url && (
+                    <img
+                      src={filePreviews.penagihanSelfie.url}
+                      alt="Selfie preview"
+                      className="mt-3 h-32 w-full object-cover rounded-lg border border-gray-200"
+                    />
+                  )}
                 </div>
               </div>
 
@@ -198,7 +261,25 @@ export function FormLKN() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Foto Selfie KTP</label>
-                <input type="file" className="w-full px-4 py-2 border border-gray-300 rounded-lg" />
+                <label className="inline-flex items-center justify-center w-full px-4 py-2 bg-[#003c7a] text-white rounded-lg cursor-pointer hover:bg-[#002d5a] transition-colors">
+                  Choose file
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="sr-only"
+                    onChange={(e) => handleFileChange('ekspansiSelfie', e)}
+                  />
+                </label>
+                {filePreviews.ekspansiSelfie.name && (
+                  <p className="mt-2 text-sm text-gray-600">{filePreviews.ekspansiSelfie.name}</p>
+                )}
+                {filePreviews.ekspansiSelfie.url && (
+                  <img
+                    src={filePreviews.ekspansiSelfie.url}
+                    alt="Selfie preview"
+                    className="mt-3 h-32 w-full object-cover rounded-lg border border-gray-200"
+                  />
+                )}
               </div>
 
               <div>
@@ -251,11 +332,42 @@ export function FormLKN() {
               <div className="grid grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Verifikasi Dokumen</label>
-                  <input type="file" className="w-full px-4 py-2 border border-gray-300 rounded-lg" />
+                  <label className="inline-flex items-center justify-center w-full px-4 py-2 bg-[#003c7a] text-white rounded-lg cursor-pointer hover:bg-[#002d5a] transition-colors">
+                    Choose file
+                    <input
+                      type="file"
+                      className="sr-only"
+                      onChange={(e) => handleFileChange('penyelesaianDokumen', e)}
+                    />
+                  </label>
+                  {filePreviews.penyelesaianDokumen.name && (
+                    <p className="mt-2 text-sm text-gray-600">{filePreviews.penyelesaianDokumen.name}</p>
+                  )}
+                  {filePreviews.penyelesaianDokumen.url && (
+                    <p className="mt-2 text-sm text-gray-600">Preview not available for this file type.</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Foto Selfie KTP</label>
-                  <input type="file" className="w-full px-4 py-2 border border-gray-300 rounded-lg" />
+                  <label className="inline-flex items-center justify-center w-full px-4 py-2 bg-[#003c7a] text-white rounded-lg cursor-pointer hover:bg-[#002d5a] transition-colors">
+                    Choose file
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="sr-only"
+                      onChange={(e) => handleFileChange('penyelesaianSelfie', e)}
+                    />
+                  </label>
+                  {filePreviews.penyelesaianSelfie.name && (
+                    <p className="mt-2 text-sm text-gray-600">{filePreviews.penyelesaianSelfie.name}</p>
+                  )}
+                  {filePreviews.penyelesaianSelfie.url && (
+                    <img
+                      src={filePreviews.penyelesaianSelfie.url}
+                      alt="Selfie preview"
+                      className="mt-3 h-32 w-full object-cover rounded-lg border border-gray-200"
+                    />
+                  )}
                 </div>
               </div>
 
