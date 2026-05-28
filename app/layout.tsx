@@ -9,7 +9,6 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: 'Banking Dashboard',
   description: 'Modern banking dashboard for financial management',
-  generator: 'v0.app',
   icons: {
     icon: [
       {
