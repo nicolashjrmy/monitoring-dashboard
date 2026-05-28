@@ -1,12 +1,12 @@
 import { Sidebar } from '@/components/sidebar';
-import { FormCKPN } from '@/components/form-ckpn';
+import { FormLKN } from '@/components/form-lkn';
 
-export default function FormCKPNPage() {
+export default function FormLKNPage() {
   return (
     <div className="flex">
       <Sidebar />
       <div className="flex-1 ml-64">
-        <FormCKPN />
+        <FormLKN />
       </div>
     </div>
   );

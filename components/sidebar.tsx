@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 
 const menuItems = [
   { icon: Grid3x3, label: 'Dashboard', href: '/' },
-  { icon: FileText, label: 'Form CKPN', href: '/form-ckpn' },
+  { icon: FileText, label: 'Form LKN', href: '/form-lkn' },
   { icon: Bell, label: 'Notifications', href: '/notifications' },
 ];
 
